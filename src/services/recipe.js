@@ -4,13 +4,13 @@ import config from "../config"
 const recipeUrl = `${config.apiURL}/recipes`;
 const headers = {Authorization: "Bearer " + localStorage.getItem('token')};
 
-export const getOwnRecipes = async () => {
-  const response = await axios.get(recipeUrl,{ headers });
+export const getOwnRecipes = async (params = '?') => {
+  const response = await axios.get(`${recipeUrl}/${params}`,{ headers });
   return response.data;
 }
 
-export const getAllRecipes = async () => {
-  const response = await axios.get(`${recipeUrl}/all`, {});
+export const getAllRecipes = async (params = '?') => {
+  const response = await axios.get(`${recipeUrl}/all/${params}`, {});
   return response.data;
 }
 

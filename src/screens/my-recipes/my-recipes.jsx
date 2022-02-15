@@ -1,21 +1,26 @@
 import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import RecipeList from '../../components/recipe-list';
 import { getOwnRecipes } from '../../services/recipe';
 
 const MyRecipes = () => {
 
   const [recipes, setRecipes] = useState([]);
+  const [metadata, setMetadata] = useState({});
+  const location = useLocation();
 
   useEffect(async () => {
-    const { data } = await getOwnRecipes();
-    console.log('recipe', data);
+    const params = location.search;
+    const { data, metadata: currMetadata } = await getOwnRecipes(params);
     setRecipes(data);
-  }, []);
+    setMetadata(currMetadata);
+
+  }, [location]);
 
 
   return (
     <>
-      {recipes?.length > 0 ? <RecipeList recipes={recipes} own={true} /> : <h1> Loading</h1>}
+      {recipes?.length > 0 ? <RecipeList recipes={recipes} total={metadata.total} /> : <h1> Loading</h1>}
     </>
   );
 }

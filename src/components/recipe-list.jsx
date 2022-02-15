@@ -5,6 +5,7 @@ import { deleteRecipe } from '../services/recipe';
 import { ToastContainer } from 'react-toastify';
 import { errorNotify, successNotify } from './alert';
 import { useHistory } from 'react-router-dom';
+import Pagination from './pagination';
 
 
 const RecipeList = (props) => {
@@ -46,7 +47,6 @@ const RecipeList = (props) => {
 
   const handleUpdate = async (element) => {
     history.push({ pathname: '/update-recipe', state: { recipe: element } })
-
   }
 
   return (
@@ -69,7 +69,9 @@ const RecipeList = (props) => {
             </div>
           ))}
         </div>
+        <Pagination total={props.total} />
       </div>
+
       {showModal && selected ? (
         <>
           <div
@@ -136,7 +138,7 @@ const RecipeList = (props) => {
 
 RecipeList.propTypes = {
   recipes: propTypes.array.isRequired,
-  own: propTypes.bool,
+  total: propTypes.number,
 }
 
 
