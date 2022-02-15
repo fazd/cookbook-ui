@@ -1,11 +1,11 @@
 import React from 'react';
-import { login } from '../../services/auth';
+import { login, me } from '../../services/auth';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useLocalStorage } from '../../hooks/use-local-storage';
 import { Link, useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { logged } from '../../slices/login-slices';
+import { logged, setUser } from '../../slices/login-slices';
 
 const Login = () => {
   const dispatcher = useDispatch();
@@ -19,9 +19,11 @@ const Login = () => {
 
     try {
       const { token, expiresIn } = await login({ email, password });
-
       setItem('token', token)
       setItem('expiresIn', expiresIn);
+      const user = await me();
+      dispatcher(setUser(user));
+      console.log('user', user);
       dispatcher(logged());
       history.push('/home');
     } catch (error) {

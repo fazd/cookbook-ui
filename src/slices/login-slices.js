@@ -3,7 +3,8 @@ import { createSlice } from '@reduxjs/toolkit';
 export const loginSlides = createSlice({
    name: 'login',
    initialState: {
-    isLogged: false
+    isLogged: false,
+    user: null,
    },
    reducers: {
       logged: (state) => {
@@ -11,10 +12,13 @@ export const loginSlides = createSlice({
       },
       logout: (state) => {
         state.isLogged = false;
+      },
+      setUser: (state, actions) => {
+         state.user = actions.payload;
       }
    },
 });
 
-export const { logged } = loginSlides.actions;
+export const { logged, logout, setUser } = loginSlides.actions;
 
 export default loginSlides.reducer;

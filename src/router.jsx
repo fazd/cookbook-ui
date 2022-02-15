@@ -12,6 +12,7 @@ import Home from './screens/home/home';
 import Login from './screens/login/login';
 import MyRecipes from './screens/my-recipes/my-recipes';
 import Register from './screens/register/register';
+import UpdateRecipe from './screens/update-recipe/update-recipe';
 
 
 const Routing = () => {
@@ -40,6 +41,9 @@ const Routing = () => {
           </Route>
           <Route exact path="/create-recipe">
             {isAuthenticated() ? <CreateRecipe /> : <Redirect to="/login" />}
+          </Route>
+          <Route exact path="/update-recipe">
+            {isAuthenticated() ? <UpdateRecipe /> : <Redirect to="/login" />}
           </Route>
           <Route exact path="/my-recipes">
             {isAuthenticated() ? <MyRecipes /> : <Redirect to="/login" />}

@@ -1,27 +1,52 @@
 import React, { useEffect, useState } from 'react';
 import propTypes from 'prop-types';
-import useModal from '../hooks/use-modal';
-import Recipe from './recipe';
-
+import { useSelector } from 'react-redux';
+import { deleteRecipe } from '../services/recipe';
+import { ToastContainer } from 'react-toastify';
+import { errorNotify, successNotify } from './alert';
+import { useHistory } from 'react-router-dom';
 
 
 const RecipeList = (props) => {
-
+  const history = useHistory();
   const [recipes, setRecipes] = useState([]);
-  const [own, setOwn] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [selected, setSelected] = useState(null);
+  const selector = useSelector(state => state.login.user);
 
   useEffect(() => {
-    setOwn(props.own ?? false);
     setRecipes(props.recipes);
   }, [])
 
 
   const handleMore = (rec) => {
-    console.log('clicked', rec);
     setSelected(rec);
     setShowModal(true);
+  }
+
+  const isOwn = (author) => {
+    const user = selector;
+    return user?.id === author;
+  }
+
+  const handleDelete = async (element) => {
+    try {
+      await deleteRecipe(element.id);
+      setSelected(null);
+      setShowModal(false);
+      const copyRecipes = [...recipes];
+      const found = copyRecipes.findIndex((el) => el.id === element.id);
+      copyRecipes.splice(found, 1);
+      setRecipes(copyRecipes);
+      successNotify('Recipe deleted successfully.', 1000);
+    } catch (error) {
+      errorNotify('There was an error deleting your recipe');
+    }
+  }
+
+  const handleUpdate = async (element) => {
+    history.push({ pathname: '/update-recipe', state: { recipe: element } })
+
   }
 
   return (
@@ -48,29 +73,28 @@ const RecipeList = (props) => {
       {showModal && selected ? (
         <>
           <div
-            className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
+            className="justify-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
           >
-            <div className="relative w-auto my-6 mx-auto max-w-5xl">
+            <div className="relative w-50 my-6 min-w-xl  mx-auto max-w-xl">
               <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
-                <div className="flex items-start justify-between p-5 border-b border-solid border-blueGray-200 rounded-t">
-                  <h3 className="text-3xl font-semibold">
+                <div className="flex justify-center p-5 border-b border-solid border-blueGray-200 rounded-t">
+                  <h3 className="text-3xl font-bold justify-center">
                     {selected.title}
                   </h3>
                 </div>
-                <div className="w-full aspect-w-1 aspect-h-1 rounded-lg overflow-hidden xl:aspect-w-7 xl:aspect-h-8">
+                <div className="w-full mt-4 aspect-w-1 aspect-h-1 rounded-lg overflow-hidden xl:aspect-w-5 xl:aspect-h-4">
                   <img
                     src={selected.image}
                     alt={selected.title}
-                    className="object-contain group-hover:opacity-75"
-
+                    className="rounded-t-lg object-contain h-48 w-50"
                   />
                 </div>
                 <div className="relative p-6 flex-auto">
-                  <p className="my-4 text-blueGray-500 text-lg leading-relaxed">
+                  <p className="my-4 text-blueGray-500  leading-relaxed">
                     {selected.description}
                   </p>
                 </div>
-                <div className="flex items-center justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">
+                <div className="flex items-center justify-between p-6 border-t border-solid border-blueGray-200 rounded-b">
                   <button
                     className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                     type="button"
@@ -78,21 +102,35 @@ const RecipeList = (props) => {
                   >
                     Close
                   </button>
-                  <button
-                    className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                    type="button"
-                    onClick={() => setShowModal(false)}
-                  >
-                    Save Changes
-                  </button>
+                  {isOwn(selected.author) ?
+                    <div className=''>
+                      <button
+                        className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-2 mb-1 ease-linear transition-all duration-150"
+                        type="button"
+                        onClick={() => handleUpdate(selected)}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className="bg-red-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                        type="button"
+                        onClick={() => handleDelete(selected)}
+                      >
+                        Delete
+                      </button>
+
+                    </div>
+                    : <></>}
                 </div>
               </div>
             </div>
           </div>
           <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
         </>
-      ) : null}
-    </div>
+      ) : null
+      }
+      <ToastContainer />
+    </div >
   );
 };
 

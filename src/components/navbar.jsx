@@ -1,30 +1,29 @@
 import React, { useEffect, useState } from 'react'
-import { Popover } from '@headlessui/react'
-import {
-  MenuIcon,
-} from '@heroicons/react/outline'
-import { useLocalStorage } from '../hooks/use-local-storage';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { Popover } from '@headlessui/react'
+import { MenuIcon } from '@heroicons/react/outline'
+import { useLocalStorage } from '../hooks/use-local-storage';
+import { logout as logoutAction, setUser } from '../slices/login-slices';
 
 
 const Navbar = () => {
-
+  const dispatcher = useDispatch();
   const selector = useSelector(state => state.login.isLogged);
   const [isLogged, setIsLogged] = useState(false);
-  const { getItem, clear } = useLocalStorage;
+  const { clear } = useLocalStorage;
 
 
   useEffect(() => {
-    const hasToken = getItem('token');
-    if (hasToken) {
-      setIsLogged(true);
-    }
+    setIsLogged(selector);
   }, [selector]);
 
   const logout = () => {
     clear();
     setIsLogged(false);
+    dispatcher(logoutAction());
+    dispatcher(setUser(null));
   }
 
   return (
@@ -33,7 +32,7 @@ const Navbar = () => {
         <div className="flex justify-between items-center border-b-2 border-gray-100 py-6 md:justify-start md:space-x-10">
           <div className="flex justify-start lg:w-0 lg:flex-1">
             <Link to="/">
-              <span className="sr-only">Workflow</span>
+              <span className="sr-only">Cookbook</span>
               <img
                 className="h-8 w-auto sm:h-10"
                 src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg"
