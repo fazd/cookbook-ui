@@ -1,40 +1,39 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { createNewRecipe, } from '../../services/recipe';
 import toBase64 from '../../utils';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { errorNotify, successNotify } from '../../components/alert';
+import { useHistory } from 'react-router-dom';
+
 const CreateRecipe = () => {
 
+  const history = useHistory();
   const [image, setImage] = useState(null);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
 
-  const submitForm = async (event) => {
-    const form = event.target.form;
-    console.log('form', form);
-    console.log('title', title);
-    console.log('description', description);
+  const submitForm = async () => {
     if (image !== null) {
-      console.log('allow to do that', image);
-      const response = await createNewRecipe({ title, description, image });
-      console.log('response', response);
+      await createNewRecipe({ title, description, image });
+      successNotify('Your recipe has been created', 1000);
+      setTimeout(() => {
+        history.push('/home');
+      }, 2000);
     }
   }
 
   const handleImage = async (event) => {
     const file = event.target.files[0];
-    console.log('file', file);
     if (file.size > 50000) {
-      console.log('error max file passed');
+      errorNotify('Image exceeds 50KB');
       setImage(null);
     }
     else {
-      console.log('file', file);
-      // const blobFile = URL.createObjectURL(file);
       const elem = await toBase64(file);
       setImage(elem);
     }
-    // console.log('file', elem);
   }
-
 
   return (
     <div className='min-h-full flex items-center justify-center py-12 px-4 sm:px-8 lg:px-10'>
@@ -123,6 +122,7 @@ const CreateRecipe = () => {
             </div>
           </div>
         </form>
+        <ToastContainer />
       </div>
     </div>
   );

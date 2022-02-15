@@ -5,17 +5,17 @@ import { getAllRecipes } from '../../services/recipe';
 
 const Home = () => {
 
-  const [recipes, setRecipes] = useState(null);
+  const [recipes, setRecipes] = useState([]);
 
   useEffect(async () => {
-    const { data, metadata } = await getAllRecipes();
+    const { data } = await getAllRecipes();
     setRecipes(data);
   }, []);
 
 
   return (
     <>
-      {recipes?.length > 0 ? <RecipeList recipes={recipes} /> : null}
+      {recipes?.length > 0 ? <RecipeList recipes={recipes} /> : <h1>loading</h1>}
     </>
   )
 };

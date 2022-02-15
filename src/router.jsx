@@ -1,10 +1,11 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
 import {
   BrowserRouter as Router,
   Route,
   Switch,
 } from 'react-router-dom';
-import Recipe from './components/recipe';
+import { useLocalStorage } from './hooks/use-local-storage';
 import PublicLayout from './layout/principal';
 import CreateRecipe from './screens/create-recipe/create-recipe';
 import Home from './screens/home/home';
@@ -14,6 +15,13 @@ import Register from './screens/register/register';
 
 
 const Routing = () => {
+  const { getItem } = useLocalStorage;
+
+  const isAuthenticated = () => {
+    console.log('token', getItem('token'));
+    return getItem("token") !== null;
+  }
+
   return (
     <Router>
       <Switch>
@@ -31,15 +39,11 @@ const Routing = () => {
             <Home />
           </Route>
           <Route exact path="/create-recipe">
-            <CreateRecipe />
+            {isAuthenticated() ? <CreateRecipe /> : <Redirect to="/login" />}
           </Route>
           <Route exact path="/my-recipes">
-            <MyRecipes />
+            {isAuthenticated() ? <MyRecipes /> : <Redirect to="/login" />}
           </Route>
-          <Route exact path="/recipe">
-            <Recipe />
-          </Route>
-
         </PublicLayout>
       </Switch>
     </Router>

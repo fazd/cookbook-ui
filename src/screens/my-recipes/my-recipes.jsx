@@ -7,7 +7,7 @@ const MyRecipes = () => {
   const [recipes, setRecipes] = useState([]);
 
   useEffect(async () => {
-    const { data, metadata } = await getOwnRecipes();
+    const { data } = await getOwnRecipes();
     console.log('recipe', data);
     setRecipes(data);
   }, []);
@@ -15,7 +15,7 @@ const MyRecipes = () => {
 
   return (
     <>
-      <RecipeList recipes={recipes} />
+      {recipes?.length > 0 ? <RecipeList recipes={recipes} own={true} /> : <h1> Loading</h1>}
     </>
   );
 }

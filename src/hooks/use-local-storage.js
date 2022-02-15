@@ -6,7 +6,7 @@ const setItem = (key, value) => {
 };
 
 const getItem = (key) => {
-  return window.getItem(key);
+  return window.localStorage.getItem(key);
 }
 
 const removeItem = (key) => {

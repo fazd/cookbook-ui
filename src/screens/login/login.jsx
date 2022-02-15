@@ -1,11 +1,16 @@
 import React from 'react';
-import { useLocalStorage } from '../../hooks/use-local-storage';
 import { login } from '../../services/auth';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useLocalStorage } from '../../hooks/use-local-storage';
+import { Link, useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { logged } from '../../slices/login-slices';
 
-const Login = (props) => {
-
+const Login = () => {
+  const dispatcher = useDispatch();
   const { setItem } = useLocalStorage;
-
+  const history = useHistory();
 
   const logIn = async (event) => {
     const form = event.target.form;
@@ -14,14 +19,27 @@ const Login = (props) => {
 
     try {
       const { token, expiresIn } = await login({ email, password });
+
       setItem('token', token)
       setItem('expiresIn', expiresIn);
+      dispatcher(logged());
+      history.push('/home');
     } catch (error) {
-      console.log('error', error);
-
+      notify();
     }
   }
 
+  const notify = () => toast.error('Login failed', {
+    position: "bottom-center",
+    autoClose: 3000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: false,
+    draggable: true,
+    progress: undefined,
+    theme: 'colored'
+
+  });
 
   return (
     <div className='min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8'>
@@ -31,7 +49,7 @@ const Login = (props) => {
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Log in to your account</h2>
           <p className="mt-2 text-center text-sm text-gray-600">
             Or
-            <a href="/register" className="font-medium text-indigo-600 hover:text-indigo-500"> Register here </a>
+            <Link to="/register" className="font-medium text-indigo-600 hover:text-indigo-500"> Register here </Link>
           </p>
         </div>
         <form className="mt-8 space-y-6" >
@@ -57,6 +75,7 @@ const Login = (props) => {
             </button>
           </div>
         </form>
+        <ToastContainer />
       </div >
     </div >
   )

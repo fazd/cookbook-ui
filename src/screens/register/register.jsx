@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { register } from '../../services/auth';
 
 const Register = () => {
@@ -30,7 +31,7 @@ const Register = () => {
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Register here</h2>
           <p className="mt-2 text-center text-sm text-gray-600">
             Or
-            <a href="/login" className="font-medium text-indigo-600 hover:text-indigo-500"> Login here </a>
+            <Link to="/login" className="font-medium text-indigo-600 hover:text-indigo-500"> Login here </Link>
           </p>
         </div>
         <form className="mt-8 space-y-6" >
