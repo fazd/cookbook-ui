@@ -1,5 +1,5 @@
-import { useCallback } from "react";
-import { useLocalStorage } from "./use-local-storage";
+import { useCallback } from 'react';
+import { useLocalStorage } from './use-local-storage';
 
 const {getItem, setItem} = useLocalStorage;
 

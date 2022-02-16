@@ -5,9 +5,10 @@ import { getOwnRecipes } from '../../services/recipe';
 
 const MyRecipes = () => {
 
+  const location = useLocation();
+
   const [recipes, setRecipes] = useState([]);
   const [metadata, setMetadata] = useState({});
-  const location = useLocation();
 
   useEffect(async () => {
     const params = location.search;

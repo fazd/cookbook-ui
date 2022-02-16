@@ -1,8 +1,8 @@
 import { toast } from 'react-toastify';
 
-export const errorNotify = (message) => toast.error(message, {
-  position: "bottom-center",
-  autoClose: 3000,
+export const errorNotify = (message, time = 3000) => toast.error(message, {
+  position: 'bottom-center',
+  autoClose: time,
   hideProgressBar: false,
   closeOnClick: true,
   pauseOnHover: false,
@@ -12,7 +12,7 @@ export const errorNotify = (message) => toast.error(message, {
 });
 
 export const successNotify = (message, time = 3000) => toast.success(message, {
-  position: "bottom-center",
+  position: 'bottom-center',
   autoClose: time,
   hideProgressBar: false,
   closeOnClick: true,

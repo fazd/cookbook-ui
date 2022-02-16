@@ -1,5 +1,5 @@
-import React from "react"
-import Navbar from "../components/navbar"
+import React from 'react';
+import Navbar from '../components/navbar';
 
 const publicLayout = ({ children }) => {
   return (
@@ -9,4 +9,5 @@ const publicLayout = ({ children }) => {
     </>
   )
 }
+
 export default publicLayout;

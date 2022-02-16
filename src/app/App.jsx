@@ -1,26 +1,20 @@
 import React from 'react'
-import { ReactQueryDevtools } from 'react-query/devtools';
-import Routing from '../router';
-import './App.css'
-import QueryProvider from '../context/query-client';
-import store from './store';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistStore } from 'redux-persist';
+import Routing from '../router';
+import './App.css'
+import store from './store';
 
 
-let persistor = persistStore(store);
+const persistor = persistStore(store);
 
 function App() {
   return (
     <React.StrictMode>
       <Provider store={store}>
         <PersistGate persistor={persistor} >
-          <QueryProvider>
-            <Routing />
-            <ReactQueryDevtools />
-          </QueryProvider>
-
+          <Routing />
         </PersistGate>
       </Provider>
     </React.StrictMode>

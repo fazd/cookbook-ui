@@ -17,7 +17,7 @@ export const register = async (userData) => {
 
 
 export const me = async () => {
-  const headers = {Authorization: "Bearer " + localStorage.getItem('token')};
+  const headers = {Authorization: 'Bearer ' + localStorage.getItem('token')};
   const response = await axios.get(authURL, { headers });
   return response.data;
 }

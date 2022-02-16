@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom/cjs/react-router-dom.min';
+import { useLocation } from 'react-router-dom';
 import RecipeList from '../../components/recipe-list';
 import { getAllRecipes } from '../../services/recipe';
 

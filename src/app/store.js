@@ -1,7 +1,6 @@
-import { configureStore } from '@reduxjs/toolkit';
-import loginSlices from '../slices/login-slices';
-import storage from 'redux-persist/lib/storage';
 import { combineReducers } from 'redux';
+import { configureStore } from '@reduxjs/toolkit';
+import storage from 'redux-persist/lib/storage';
 import {
     persistReducer,
     FLUSH,
@@ -11,6 +10,7 @@ import {
     PURGE,
     REGISTER,
 } from 'redux-persist';
+import loginSlices from '../slices/login-slices';
 
 const persistConfig = {
     key: 'login',
@@ -21,11 +21,11 @@ const reducers = combineReducers({ login: loginSlices });
 const persistedReducer = persistReducer(persistConfig, reducers);
 
 export default configureStore({
-    reducer: persistedReducer,
-    middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware({
-            serializableCheck: {
-                ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-            },
-        }),
+  reducer: persistedReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }),
 });

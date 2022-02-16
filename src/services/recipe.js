@@ -1,8 +1,8 @@
-import axios from "axios"
-import config from "../config"
+import axios from 'axios';
+import config from '../config';
 
 const recipeUrl = `${config.apiURL}/recipes`;
-const headers = {Authorization: "Bearer " + localStorage.getItem('token')};
+const headers = {Authorization: 'Bearer ' + localStorage.getItem('token')};
 
 export const getOwnRecipes = async (params = '?') => {
   const response = await axios.get(`${recipeUrl}/${params}`,{ headers });
