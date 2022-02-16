@@ -27,6 +27,8 @@ const Login = () => {
       dispatcher(setUser(user));
       dispatcher(logged());
       history.push('/home');
+      location.reload();
+
     } catch (error) {
       errorNotify('Login Failed');
     }

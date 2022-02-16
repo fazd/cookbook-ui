@@ -4,7 +4,6 @@ import { useHistory } from 'react-router-dom'
 import propTypes from 'prop-types';
 import config from '../config/';
 
-
 const Pagination = (props) => {
   const limit = config.limit;
   const history = useHistory();
@@ -29,11 +28,11 @@ const Pagination = (props) => {
     params.append('page', value);
     setPage(value);
     history.push({ search: params.toString() })
-    props.onChangePage(true);
   }
 
   return (
     <div className='bg-white mt-5 px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6'>
+
       <div className='flex-1 flex justify-between sm:hidden'>
         <a
           href='#'

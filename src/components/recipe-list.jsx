@@ -70,7 +70,7 @@ const RecipeList = (props) => {
             </div>
           ))}
         </div>
-        <Pagination total={props.total} />
+        <Pagination total={props.total ?? 0} />
       </div>
 
       {showModal && selected ? (
