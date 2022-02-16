@@ -11,7 +11,6 @@ const Modal = (props) => {
   const selector = useSelector(state => state.login.user);
 
   useEffect(() => {
-    console.log('props', props);
     setSelected(props.selected);
   }, [selected]);
 
